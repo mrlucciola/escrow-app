@@ -1,4 +1,5 @@
 use solana_program::program_error::ProgramError;
+use crate::error::EscrowError::InvalidInstruction;
 
 pub enum EscrowInstruction {
     /// create escrow acct
@@ -20,7 +21,7 @@ pub enum EscrowInstruction {
 
 impl EscrowInstruction {
     pub fn unpack(input: &[u8]) -> Result<Self, ProgramError> {
-        let (tag, rest) = input.split_first().ok_or(InvalidInstruction)?; // we will import InvalidInstruction next
+        let (tag, rest) = input.split_first().ok_or(InvalidInstruction)?;
 
         Ok(match tag {
             0 => Self::InitEscrow {
