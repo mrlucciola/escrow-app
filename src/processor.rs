@@ -9,7 +9,7 @@ use solana_program::{
     sysvar::Sysvar,
 };
 
-use crate::{error::EscrowError, instruction::EscrowInstruction};
+use crate::{error::EscrowError, instruction::EscrowInstruction, state::Escrow};
 
 pub struct Processor;
 
@@ -51,7 +51,7 @@ impl Processor {
         let rent = &Rent::from_account_info(next_account_info(account_info_iter)?)?;
 
         if !rent.is_exempt(escrow_account.lamports(), escrow_account.data_len()) {
-            return Err(EscrowError::NotRentExempt.info());
+            return Err(EscrowError::NotRentExempt.into());
         }
 
         // Escrow and unpack_unchecked will be made in next commit
